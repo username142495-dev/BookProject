@@ -1,6 +1,7 @@
 ﻿using BookProject.Interfaces;
 
 
+
 namespace BookProject
 {
     internal class BookManager : IReadable, ICreatable<Book>, IUpdatable, IDeletable
@@ -39,6 +40,15 @@ namespace BookProject
             }
             return false;
         }
+
+        public BookManager()
+        {
+            Data();
+        } 
+        /// <summary>
+        /// Function for Users
+        /// </summary>
+        /// 
         public bool BookFunction()
         {
             Console.WriteLine("\nChoose an action:");
@@ -48,31 +58,31 @@ namespace BookProject
             Console.WriteLine("4. Show all books");
             Console.Write("Enter choice (1-4): ");
 
-            string choice = Console.ReadLine();
+            string choice = Console.ReadLine()??string.Empty;
 
             switch (choice)
             {
                 case "1":
                     Console.Write("Enter Book ID: ");
-                    int id = int.Parse(Console.ReadLine());
+                    int id = int.Parse(Console.ReadLine() ?? string.Empty);
 
                     Console.Write("Enter Book Name: ");
-                    string name = Console.ReadLine();
+                    string name = Console.ReadLine() ?? string.Empty;
 
                     Console.Write("Enter Author: ");
-                    string author = Console.ReadLine();
+                    string author = Console.ReadLine() ?? string.Empty;
 
                     Console.Write("Enter Title: ");
-                    string title = Console.ReadLine();
+                    string title = Console.ReadLine() ?? string.Empty;
 
                     Console.Write("Enter Description: ");
-                    string description = Console.ReadLine();
+                    string description = Console.ReadLine() ?? string.Empty;
 
                     Console.Write("Enter Release Date (yyyy-mm-dd): ");
-                    DateTime releaseDate = DateTime.Parse(Console.ReadLine());
+                    DateTime releaseDate = DateTime.Parse(Console.ReadLine() ?? string.Empty);
 
                     Console.Write("Enter Genre (Comedy, Horror, Adventure, Fantasy): ");
-                    Genre genre = (Genre)Enum.Parse(typeof(Genre), Console.ReadLine(), true);
+                    Genre genre = (Genre)Enum.Parse(typeof(Genre), Console.ReadLine() ?? string.Empty, true);
 
                     Book newBook = new Book(author, title, description, releaseDate, genre, id, name);
                     Add(newBook);
@@ -82,7 +92,7 @@ namespace BookProject
 
                 case "2":
                     Console.Write("Enter Book ID to delete: ");
-                    int deleteId = int.Parse(Console.ReadLine());
+                    int deleteId = int.Parse(Console.ReadLine() ?? string.Empty);
 
                     bool deleted = DeleteById(deleteId);
                     Console.WriteLine(deleted ? "Book deleted successfully!" : "Book not found.");
@@ -90,10 +100,10 @@ namespace BookProject
 
                 case "3":
                     Console.Write("Enter Book ID to update: ");
-                    int updateId = int.Parse(Console.ReadLine());
+                    int updateId = int.Parse(Console.ReadLine() ?? string.Empty);
 
                     Console.Write("Enter new Book Name: ");
-                    string newName = Console.ReadLine();
+                    string newName = Console.ReadLine() ?? string.Empty;
 
                     bool updated = Update(updateId, newName);
                     Console.WriteLine(updated ? "Book updated." : "Book not found.");
@@ -113,6 +123,17 @@ namespace BookProject
             return true;
         }
 
+        private void Data()
+        {
+            string projectdir = Directory.GetParent(Environment.CurrentDirectory)?.Parent.Parent?.FullName ?? string.Empty;
+            string fileDir = Path.Combine(projectdir, "Book Data");
+            string filePath = Path.Combine(fileDir, "Books.xml");
 
+            if(File.Exists(filePath))
+            {
+                Console.WriteLine("File cant be found");
+            }
+            _books.Clear();
+        }
     }
 }
