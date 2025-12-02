@@ -21,7 +21,7 @@ namespace BookProject
     /// </summary>
     internal class Book
     {
-        private DateTime _releasedate;
+        private DateTime _Releasedate;
         private int _bookid;
         
         public string BookName { get; set; } = string.Empty;
